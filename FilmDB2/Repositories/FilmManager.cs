@@ -11,6 +11,7 @@ namespace FilmDB2.Repositories
         {
             _context = context;
         }
+
         public FilmManager AddFilm(FilmModel filmModel)
         {
             _context.FilmModels.Add(filmModel);
@@ -20,11 +21,15 @@ namespace FilmDB2.Repositories
 
         public FilmManager RemoveFilm(int id)
         {
+            _context.FilmModels.Remove(GetFilm(id));
+            _context.SaveChanges();
             return this;
         }
 
         public FilmManager UpdateFilm(FilmModel filmModel)
         {
+            _context.FilmModels.Update(filmModel);
+            _context.SaveChanges();
             return this;
         }
 
@@ -33,14 +38,16 @@ namespace FilmDB2.Repositories
             return this;
         }
 
-        public FilmManager GetFilm(int id)
+        public FilmModel GetFilm(int id)
         {
-            return null;
+            var film = _context.FilmModels.SingleOrDefault(x => x.ID == id);
+            return film;
         }
 
         public List<FilmModel> GetFilms()
         {
-            return null;
+            var films = _context.FilmModels.ToList();
+            return films;
         }
     }
 }
